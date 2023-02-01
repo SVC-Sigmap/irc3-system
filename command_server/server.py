@@ -19,6 +19,8 @@ class Server(BaseHTTPRequestHandler):
                 print("Undock completed.")
             case _:
                 print("Unknown SIGMAP-CMD")
+
+        self._set_reponse()
         
 def run_server(server_class=HTTPServer, handler_class=Server, port=8080):
     logging.basicConfig(level=logging.INFO)
