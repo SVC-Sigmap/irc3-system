@@ -39,7 +39,7 @@ class Server(BaseHTTPRequestHandler):
 #          HTTPServer will run with handler implementation created above called Server
 #          port
 #          Sets port the server will run on
-#  Returns: Description
+#  Returns: DNone
 #-------------------------------------------------------------------
 def run_server(server_class=HTTPServer, handler_class=Server, port=8080):
     logging.basicConfig(level=logging.INFO)
