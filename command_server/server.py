@@ -1,9 +1,19 @@
 #!/usr/bin/env python3
 
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import os
 
 server = Flask(__name__)
+
+# this is "fake" data for now to test connection between the server and the app. This should be replaced with
+# functional checks at a later date
+robot_status = [
+    {'Battery': 99, 'Name': 'Wifibot-0', 'Ready': True, 'Scanning': False}
+]
+
+@server.route('/status')
+def get_status():
+    return jsonify(robot_status)
 
 @server.route('/webhook', methods=['POST'])
 def webhook():
