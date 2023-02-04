@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+#-------------------------------------------------------------------
+#  File: main.py
+#  Summary: Main python executable that will call and run all parts of the
+#           iRC3 system
+#-------------------------------------------------------------------
 import command_server
 
 def main():
