@@ -36,7 +36,7 @@ def webhook():
                     print('Undock command executed')
                     return "Undock Executed"
                 case _:
-                    print("Unknown Command")
-
-        return "Webhook Recieved!"
+                    return "Unknown Command"
+        else:
+            return "Webhook received without command!"
 
