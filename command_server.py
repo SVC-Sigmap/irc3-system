@@ -10,11 +10,12 @@
 #           recieves robot commands via POST and performs the corresponding command
 #-------------------------------------------------------------------
 from flask import Flask, request, jsonify
-import os
+import subprocess
 import data_collection
 
 server = Flask(__name__)
 
+ros2_path = '/opt/ros/humble/bin/ros2'
 
 @server.route('/api/status')
 def get_status():
@@ -32,7 +33,10 @@ def webhook():
             match content.get('SIGMAP-CMD'):
                 case 'Undock':
                     print('Undock Command Recieved!')
-                    os.system(f'ros2 action send_goal /undock irobot_create_msgs/action/Undock "{{}}"')
+                    try:
+                        undock_action = subprocess.run([ros2_path, 'action', 'send_goal', '/undock', 'irobot_create_msgs/action/Undock', '{}'])
+                    except KeyboardInterrupt:
+                        pass
                     print('Undock command executed')
                     return "Undock Executed"
                 case _:
