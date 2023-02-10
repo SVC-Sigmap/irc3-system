@@ -12,10 +12,15 @@
 from flask import Flask, request, jsonify
 import subprocess
 import data_collection
+import signal_scanner
 
 server = Flask(__name__)
 
 ros2_path = '/opt/ros/humble/bin/ros2'
+
+@server.route('/api/signal')
+def get_signal():
+    return jsonify(signal_scanner.get_signal_data())
 
 @server.route('/api/status')
 def get_status():
