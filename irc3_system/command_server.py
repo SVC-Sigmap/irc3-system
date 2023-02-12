@@ -11,8 +11,8 @@
 #-------------------------------------------------------------------
 from flask import Flask, request, jsonify
 import subprocess
-import data_collection
-import signal_scanner
+import irc3_system.data_collection as data_collection
+import irc3_system.signal_scanner as signal_scanner
 
 server = Flask(__name__)
 

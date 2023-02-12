@@ -1,7 +1,8 @@
-import unittest
-import data_collection
-
-from command_server import server
+import unittest, sys
+from os.path import abspath, dirname, join
+sys.path.insert(0, join(dirname(abspath(__file__)), '..')) # sets the sys directory to the parent so modules can be imported
+from irc3_system.command_server import server
+from irc3_system.data_collection import robot_status
 
 class TestServer(unittest.TestCase):
 
@@ -11,7 +12,7 @@ class TestServer(unittest.TestCase):
     def test_get_status(self):
         response = self.server.get('/api/status')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json, data_collection.robot_status)
+        self.assertEqual(response.json, robot_status)
 
     def test_webhook(self):
         # Test for POST with Undock command
