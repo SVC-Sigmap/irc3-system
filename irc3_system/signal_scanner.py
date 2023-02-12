@@ -1,3 +1,17 @@
+#-------------------------------------------------------------------
+#  File: signal_scanner.py
+#  Summary: Module that wraps around iwconfig linux utility and returns
+#           a dictonary of the collected data. The main piece of data
+#           that this module is responsible for gathering is Link 
+#           Quality. This metric is the primary metric that will be used
+#           to assess signal strength.
+#  Functions:
+#           get_signal_data()
+#           Creates a dictionary to be turned into json later. Spawns 
+#           iwconfig subprocess and monitors the output to a variable.
+#           The output is then parsed and relevant data is shipped to
+#           the dictionary to be sent over the API.
+#-------------------------------------------------------------------
 import re, subprocess
 
 def get_signal_data():
@@ -21,20 +35,27 @@ def get_signal_data():
             
         if "Signal level" in line:
             # Signal level reports a value between -110 and -40. The higher the value the better the signal
+            # Additionally, Link Quality is derived from Signal Level, so it is unlikely this metric will be
+            # Entirely that useful however it is good to collect and return it anyway.
+            # Signal Level can give the same value as Link Quality (%) with the following:
+            # quality_percent = (signal_strength + 110) * 10 / 7
             match = re.search("Signal level=-([0-9]+)", line)
             signal_level_dbm = -(int(match.group(1)))
             data["signal_level_dbm"] = signal_level_dbm
             
         if "Bit Rate" in line:
+            # Bit rate in iwconfig is a rough approx, however it could be useful at some point.
             match = re.search("Bit Rate=([0-9]+)", line)
             bit_rate = int(match.group(1))
             data["bit_rate"] = bit_rate
             
         if "Access Point" in line:
+            # General information gathering
             match = re.search("Access Point: ([0-9A-Fa-f:]+)", line)
             data["access_point"] = match.group(1)
             
         if "ESSID" in line:
+            # General information gathering
             match = re.search('ESSID:"([^"]+)"', line)
             data["essid"] = match.group(1)
             
