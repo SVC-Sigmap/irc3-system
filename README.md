@@ -13,6 +13,7 @@ $ ./main.py
 
 ### Other Dependencies:
 - `iwconfig`
+- ROS2 Humble
 
 ## Testing
 
