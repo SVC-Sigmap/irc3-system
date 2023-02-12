@@ -11,33 +11,13 @@ $ pip install -r requirements.txt
 $ ./main.py
 ```
 
+### Other Dependencies:
+- `iwconfig`
+
 ## Testing
-[command_server_test.py](https://github.com/SVC-Sigmap/irc3-system/blob/main/command_server_test.py)
-```stdout
-$ python3 -m unittest command_server_test.py 
-.Webhook JSON:
-{'SIGMAP-CMD': 'Undock'}
-SIGMAP-CMD Present in POST JSON
-Undock Command Recieved!
-Waiting for an action server to become available...
-Sending goal:
-     {}
 
-Goal accepted with ID: 2b64f1b04ae44786ac0aabb359110509
-
-Result:
-    is_docked: false
-
-Goal finished with status: SUCCEEDED
-Undock command executed
-Webhook JSON:
-{'SIGMAP-CMD': 'Invalid'}
-SIGMAP-CMD Present in POST JSON
-Webhook JSON:
-{}
-.
-----------------------------------------------------------------------
-Ran 2 tests in 7.969s
-
-OK
-```
+| Module | Unit Test | Passing |
+| --- | --- | --- |
+| [command_server](https://github.com/SVC-Sigmap/irc3-system/blob/main/irc3_system/command_server.py) | [test_command_server](https://github.com/SVC-Sigmap/irc3-system/blob/main/tests/test_command_server.py) | Yes |
+| [signal_scanner](https://github.com/SVC-Sigmap/irc3-system/blob/main/irc3_system/signal_scanner.py) | [test_signal_scanner](https://github.com/SVC-Sigmap/irc3-system/blob/main/tests/test_signal_scanner.py) | Yes
+| [data_collection](https://github.com/SVC-Sigmap/irc3-system/blob/main/irc3_system/data_collection.py) | None | N/A |
