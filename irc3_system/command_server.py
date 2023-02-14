@@ -17,6 +17,7 @@ import irc3_system.signal_scanner as signal_scanner
 server = Flask(__name__)
 
 ros2_path = '/opt/ros/humble/bin/ros2'
+processes = [] # Define an empty list for processes to be stored. This way we can terminate all running subprocesses later.
 
 @server.route('/api/signal')
 def get_signal():
@@ -37,15 +38,35 @@ def webhook():
             print('SIGMAP-CMD Present in POST JSON')
             match content.get('SIGMAP-CMD'):
                 case 'Undock':
+                    
                     print('Undock Command Recieved!')
                     try:
-                        undock_action = subprocess.run([ros2_path, 'action', 'send_goal', '/undock', 'irobot_create_msgs/action/Undock', '{}'])
+                        undock_action = subprocess.Popen([ros2_path, 'action', 'send_goal', '/undock', 'irobot_create_msgs/action/Undock', '{}'])
+                        processes.append(undock_action)
                     except KeyboardInterrupt:
                         pass
                     print('Undock command executed')
+                    
                     return "Undock Executed"
+                
+                case 'StopAll':
+                    # Terminates all processes that have been appended to the processes list
+                    print("StopAll Command Recieved\nTerminating all active subprocesses...")
+                    
+                    for p in processes:
+                        p.terminate()
+                        
+                    for p in processes:
+                        p.wait()
+                        
+                    print("All Robot commands terminated successfully")
+                        
+                    return "All processes terminated"
+                
                 case _:
+                    
                     return "Unknown Command"
+                
         else:
             return "Webhook received without command!"
 
