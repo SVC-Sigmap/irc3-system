@@ -51,8 +51,15 @@ def webhook():
                 
                 case 'StopAll':
                     # Terminates all processes that have been appended to the processes list
+                    print("StopAll Command Recieved\nTerminating all active subprocesses...")
+                    
                     for p in processes:
                         p.terminate()
+                        
+                    for p in processes:
+                        p.wait()
+                        
+                    print("All Robot commands terminated successfully")
                         
                     return "All processes terminated"
                 
