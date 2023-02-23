@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import unittest, sys
 from unittest.mock import patch
 from os.path import abspath, dirname, join
@@ -6,8 +7,9 @@ from irc3_system.signal_scanner import get_signal_data
 
 class TestSignalData(unittest.TestCase):
 
-    def test_get_signal_data(self):
-        # Test with expected output
+    def test_get_signal_data_expected(self):
+        # Basis Path:
+        # Test with expected output from iwconfig. Assert equal.
         output = '''
         wlan0     IEEE 802.11  ESSID:"ESSID"
                   Link Quality=70/70  Signal level=-50
@@ -24,7 +26,9 @@ class TestSignalData(unittest.TestCase):
                 "essid": "ESSID"
             })
 
-        # Test with unexpected output
+    def test_get_signal_data_unexpected(self):
+        # Basis Path:
+        # Test with unexpected output from iwconfig. Assert equal.
         output = '''
         wlan0     IEEE 802.11  ESSID:"ESSID"
                   Link Quality=65/70  Signal level=-50
@@ -40,3 +44,5 @@ class TestSignalData(unittest.TestCase):
                 "access_point": "00:11:22:33:44:55",
                 "essid": "ESSID"
             })
+if __name__ == '__main__':
+    unittest.main()

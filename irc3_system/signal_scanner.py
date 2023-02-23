@@ -14,7 +14,16 @@
 #-------------------------------------------------------------------
 import re, subprocess
 
+#-------------------------------------------------------------------
+#  Function: get_signal_data()
+#  Summary: Wraps around iwconfig. Parses the output and sends relevant/processed
+#           information to a dictionary. This dictionary will be jsonified and
+#           returned via web requests on the Flask server.
+#  Params: None
+#  Returns: Dictionary of signal data
+#-------------------------------------------------------------------
 def get_signal_data():
+    # Set up the data dictionary to store our data.
     data = {
         "link_quality": 0,
         "signal_level_dbm": 0,
@@ -25,7 +34,7 @@ def get_signal_data():
     iwconfig_output = subprocess.run(["iwconfig"], stdout=subprocess.PIPE, text=True)
     output = iwconfig_output.stdout
     
-    output_lines = output.split("\n")
+    output_lines = output.split("\n") # Splits SDTOUT lins so we can parse them properly.
     for line in output_lines:
         if "Link Quality" in line:
             match = re.search("Link Quality=([0-9]+)/([0-9]+)", line)
