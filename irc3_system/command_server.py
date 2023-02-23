@@ -13,6 +13,7 @@ from flask import Flask, request, jsonify
 import subprocess
 import irc3_system.data_collection as data_collection
 import irc3_system.signal_scanner as signal_scanner
+import irc3_system.hallway_travel as hallway_travel
 
 server = Flask(__name__)
 
@@ -62,6 +63,14 @@ def webhook():
                     print("All Robot commands terminated successfully")
                         
                     return "All processes terminated"
+                
+                case 'HallwayTravel':
+                    try:
+                        hallway_travel()
+                    except KeyboardInterrupt:
+                        pass
+                    
+                    return "Hallway travel complete"
                 
                 case _:
                     
