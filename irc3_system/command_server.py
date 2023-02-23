@@ -55,7 +55,7 @@ def webhook():
                     print("StopAll Command Recieved\nTerminating all active subprocesses...")
                     
                     for p in processes:
-                        p.terminate()
+                        p.kill()
                         
                     for p in processes:
                         p.wait()
@@ -66,7 +66,7 @@ def webhook():
                 
                 case 'HallwayTravel':
                     try:
-                        hallway_travel()
+                        hallway_travel(processes)
                     except KeyboardInterrupt:
                         pass
                     
