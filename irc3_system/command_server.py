@@ -47,9 +47,9 @@ def webhook():
         if content.get('SIGMAP-CMD'):
             print('SIGMAP-CMD Present in POST JSON')
             match content.get('SIGMAP-CMD'):
-                case 'Undock':
+                case 'Teleoperation':
                     
-                    print('Undock Command Recieved!')
+                    print('Teleoperation Command Recieved!')
                     try:
                         undock_action = subprocess.Popen([ros2_path, 'action', 'send_goal', '/undock', 'irobot_create_msgs/action/Undock', '{}'])
                         processes.append(undock_action)
