@@ -15,6 +15,16 @@ import irc3_system.data_collection as data_collection
 import irc3_system.signal_scanner as signal_scanner
 from irc3_system.hallway_travel import hallway_travel
 
+import os
+from typing import Text
+
+from ament_index_python.packages import get_package_share_directory, PackageNotFoundError
+
+from launch import LaunchContext, LaunchDescription, SomeSubstitutionsType, Substitution
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
+from launch_ros.actions import Node
+
 server = Flask(__name__)
 
 ros2_path = '/opt/ros/humble/bin/ros2'
@@ -38,18 +48,30 @@ def webhook():
         if content.get('SIGMAP-CMD'):
             print('SIGMAP-CMD Present in POST JSON')
             match content.get('SIGMAP-CMD'):
-                case 'Undock':
+                case 'Teleop_Keyboard':
                     
-                    print('Undock Command Recieved!')
+                    print('Teleop_Keyboard Command Recieved!')
                     try:
-                        undock_action = subprocess.Popen([ros2_path, 'action', 'send_goal', '/undock', 'irobot_create_msgs/action/Undock', '{}'])
-                        processes.append(undock_action)
+                        teleop_keyboard = subprocess.Popen([ros2_path, 'run', 'teleop_twist_keyboard', 'teleop_twist_keyboard','{}'])
+                        processes.append(teleop_keyboard)
                     except KeyboardInterrupt:
                         pass
-                    print('Undock command executed')
+                    print('Teleop_Keyboard command executed')
                     
-                    return "Undock Executed"
-                
+                    return "Teleop_Keyboard Action Executed"
+                    
+                case 'Teleoperation_Joystick':
+                    
+                    print('Teleop_Joystick Command Recieved!')
+                    try:
+                        teleop_joystick = subprocess.Popen([ros2_path, 'launch', 'create3_teleop', 'teleop_joystick_launch.py', 'joy_dev:=/dev/input/js1','{}'])
+                        processes.append(teleop_joystick)
+                    except KeyboardInterrupt:
+                        pass
+                    print('Teleop_Joystick command executed')
+                    
+                    return "Teleop_Joystick Action Executed"                    
+
                 case 'StopAll':
                     # Terminates all processes that have been appended to the processes list
                     print("StopAll Command Recieved\nTerminating all active subprocesses...")
