@@ -55,7 +55,7 @@ def webhook():
                         processes.append(teleop_keyboard)
                     except KeyboardInterrupt:
                         pass
-                    print('Telelop_Keyboard command executed')
+                    print('Teleop_Keyboard command executed')
                     
                     return "Teleop_Keyboard Action Executed"
                     
