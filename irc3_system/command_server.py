@@ -51,7 +51,7 @@ def webhook():
                     
                     print('Teleop_Keyboard Command Recieved!')
                     try:
-                        teleop_keyboard = subprocess.Popen([ros2_path, 'ros2', 'run', 'teleop_twist_keyboard', 'teleop_twist_keyboard','{}'])
+                        teleop_keyboard = subprocess.Popen([ros2_path, 'run', 'teleop_twist_keyboard', 'teleop_twist_keyboard','{}'])
                         processes.append(teleop_keyboard)
                     except KeyboardInterrupt:
                         pass
@@ -63,7 +63,7 @@ def webhook():
                     
                     print('Teleop_Joystick Command Recieved!')
                     try:
-                        teleop_joystick = subprocess.Popen([ros2_path, 'ros2', 'launch', 'create3_teleop', 'teleop_joystick_launch.py', 'joy_dev:=/dev/input/js1','{}'])
+                        teleop_joystick = subprocess.Popen([ros2_path, 'launch', 'create3_teleop', 'teleop_joystick_launch.py', 'joy_dev:=/dev/input/js1','{}'])
                         processes.append(teleop_joystick)
                     except KeyboardInterrupt:
                         pass
