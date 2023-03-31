@@ -14,6 +14,7 @@ $ ./main.py
 ### Other Dependencies:
 - `iwconfig`
 - ROS2 Humble
+- Linux distro of your choosing (Developed on Ubuntu 22.04)
 
 ## Testing
 
