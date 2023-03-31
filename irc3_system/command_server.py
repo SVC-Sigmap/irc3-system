@@ -15,16 +15,6 @@ import irc3_system.data_collection as data_collection
 import irc3_system.signal_scanner as signal_scanner
 from irc3_system.hallway_travel import hallway_travel
 
-import os
-from typing import Text
-
-from ament_index_python.packages import get_package_share_directory, PackageNotFoundError
-
-from launch import LaunchContext, LaunchDescription, SomeSubstitutionsType, Substitution
-from launch.actions import DeclareLaunchArgument
-from launch.substitutions import LaunchConfiguration
-from launch_ros.actions import Node
-
 server = Flask(__name__)
 
 ros2_path = '/opt/ros/humble/bin/ros2'
