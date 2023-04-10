@@ -4,6 +4,8 @@
 #  Summary: Flask server that will serve data out on an API and recieve robot
 #           commands as webhooks
 #  Functions:
+#           get_signal()
+#           returns jsonified signal info
 #           get_status()
 #           returns jsonified status info about the robot
 #           webhook()
@@ -15,33 +17,59 @@ import irc3_system.data_collection as data_collection
 import irc3_system.signal_scanner as signal_scanner
 from irc3_system.hallway_travel import hallway_travel
 
-server = Flask(__name__)
+server = Flask(__name__) # Creates the Flask application with the never 'server'.
 
-ros2_path = '/opt/ros/humble/bin/ros2'
+ros2_path = '/opt/ros/humble/bin/ros2' # Absolute path to where the ros2 binary is located so we don't have to rely on $PATH
 processes = [] # Define an empty list for processes to be stored. This way we can terminate all running subprocesses later.
 
+#-------------------------------------------------------------------
+#  Function: get_signal()
+#  Summary: Every time a request is made to the /api/signal endpoint, we run 
+#           the get_signal_data() function from the signal_scanner module.
+#           This endpoint will give us various data about the signal strength.
+#  Endpoint: /api/signal
+#  Params: None
+#  Returns: JSONified signal data.
+#-------------------------------------------------------------------
 @server.route('/api/signal')
 def get_signal():
     return jsonify(signal_scanner.get_signal_data())
 
+#-------------------------------------------------------------------
+#  Function: get_status()
+#  Summary: Gives a JSON for status information about the robot.
+#           Data comes from seperate module function.
+#  Endpoint: /api/status
+#  Params: None
+#  Returns: JSONified status data.
+#-------------------------------------------------------------------
 @server.route('/api/status')
 def get_status():
     return jsonify(data_collection.robot_status)
 
+#-------------------------------------------------------------------
+#  Function: webhook()
+#  Summary: Takes in POST requests and checks the JSON body for valid commands
+#           that will be translated into ROS2 robot commands.
+#  Endpoint: /webhooks/cmd
+#  Params: None
+#  Returns: Status message and status code
+#-------------------------------------------------------------------
 @server.route('/webhooks/cmd', methods=['POST'])
 def webhook():
-    if request.method == 'POST':
+    if request.method == 'POST': # First checks to make sure the request is a POST method, otherwise it immediately returns
         content = request.get_json()
-        print('Webhook JSON:')
+        print('Webhook JSON:') # Print JSON server-side
         print(content)
 
-        if content.get('SIGMAP-CMD'):
+        if content.get('SIGMAP-CMD'): # Checking for SIGMAP-CMD key in the JSON body. This is the key we store out command in.
             print('SIGMAP-CMD Present in POST JSON')
             match content.get('SIGMAP-CMD'):
                 case 'Teleop_Keyboard':
                     
                     print('Teleop_Keyboard Command Recieved!')
                     try:
+                        # Start a subprocess to start teleop
                         teleop_keyboard = subprocess.Popen([ros2_path, 'run', 'teleop_twist_keyboard', 'teleop_twist_keyboard'])
                         processes.append(teleop_keyboard)
                     except KeyboardInterrupt:
