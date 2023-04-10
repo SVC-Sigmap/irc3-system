@@ -76,14 +76,6 @@ def webhook():
                         
                     return "All processes terminated"
                 
-                case 'HallwayTravel':
-                    try:
-                        hallway_travel(processes)
-                    except KeyboardInterrupt:
-                        pass
-                    
-                    return "Hallway travel complete"
-                
                 case _:
                     
                     return "Unknown Command"
