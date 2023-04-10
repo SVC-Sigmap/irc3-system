@@ -13,6 +13,10 @@ class TestServer(unittest.TestCase):
         response = self.server.get('/api/status')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json, robot_status)
+        
+    def test_get_signal(self):
+        response = self.server.get('/api/status')
+        self.assertEqual(response.status_code, 200)
 
     def test_webhook(self):
         # Test for POST with Teleop_Keyboard command
