@@ -15,10 +15,20 @@ class TestServer(unittest.TestCase):
         self.assertEqual(response.json, robot_status)
 
     def test_webhook(self):
-        # Test for POST with Undock command
-        response = self.server.post('/webhooks/cmd', json={'SIGMAP-CMD':'Undock'})
+        # Test for POST with Teleop_Keyboard command
+        response = self.server.post('/webhooks/cmd', json={'SIGMAP-CMD':'Teleop_Keyboard'})
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data, b'Undock Executed')
+        self.assertEqual(response.data, b'Teleop_Keyboard Action Executed')
+        
+        # Test for POST with Teleop_Joystick command
+        response = self.server.post('/webhooks/cmd', json={'SIGMAP-CMD':'Teleoperation_Joystick'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, b'Teleop_Joystick Action Executed')
+        
+        # Test for POST with StopAll command
+        response = self.server.post('/webhooks/cmd', json={'SIGMAP-CMD':'StopAll'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, b'All processes terminated')
         
         # Test for POST with unknown command
         response = self.server.post('/webhooks/cmd', json={'SIGMAP-CMD':'Invalid'})
