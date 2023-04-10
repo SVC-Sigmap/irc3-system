@@ -14,6 +14,15 @@
 #-------------------------------------------------------------------
 import re, subprocess
 
+
+#-------------------------------------------------------------------
+#  Function: get_signal_data()
+#  Summary: Wraps around iwconfig. Parses the output and sends relevant/processed
+#           information to a dictionary. This dictionary will be jsonified and
+#           returned via web requests on the Flask server.
+#  Params: None
+#  Returns: Dictionary of signal data
+#-------------------------------------------------------------------
 def get_signal_data():
     data = {
         "link_quality": 0,
