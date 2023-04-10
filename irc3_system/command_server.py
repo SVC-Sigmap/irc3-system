@@ -15,7 +15,6 @@ from flask import Flask, request, jsonify
 import subprocess
 import irc3_system.data_collection as data_collection
 import irc3_system.signal_scanner as signal_scanner
-from irc3_system.hallway_travel import hallway_travel
 
 server = Flask(__name__) # Creates the Flask application with the never 'server'.
 
